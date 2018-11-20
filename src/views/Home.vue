@@ -18,25 +18,33 @@
 </style>
 
 <script>
-
+var axios = require('axios');
+// import axios from 'axios'
 export default {
   data: function() {
     return {
       message: "Welcome to Vue.js!",
-      people: [
-        { name: "alice", bio: "my name is alice", bioVisible: true },
-        { name: "barney", bio: "i like to go to the beach", bioVisible: true },
-        { name: "charlie", bio: "i like checkers", bioVisible: true }
-      ],
+      people: [],
       newPerson: { name: "darlene", bio: "my name is darlene", bioVisible: true }
     };
   },
   created: function() {
+    axios.get('http://localhost:3000/api/people').then(function(response) {
+      console.log(response.data);
+      this.people = response.data;
+    }.bind(this))
   },
   methods: {
     addPerson: function() {
+      var params = {
+        name: this.newPerson.name,
+        bio: this.newPerson.bio
+      }
+      axios.post('http://localhost:3000/api/people', params).then(function(response) {
+        console.log(response.data);
+        this.people.push(response.data);
+      }.bind(this))
       console.log('add the person');
-      this.people.push(this.newPerson);
     },
     removePerson: function(inputPerson) {
       console.log('remoing the person');
