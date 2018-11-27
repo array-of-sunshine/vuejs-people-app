@@ -8,6 +8,7 @@
       <button v-on:click="removePerson(person)">Remove this person</button>
       <hr>
     </div>
+    <p class="red" v-for="error in errors">{{error}}</p>
     <p>name:<input type="text" v-model="newPerson.name"></p>
     <p>bio:<input type="text" v-model="newPerson.bio"></p>
     <button v-on:click="addPerson()">add a new person</button>
@@ -15,6 +16,9 @@
 </template>
 
 <style>
+.red {
+  color: red;
+}
 </style>
 
 <script>
@@ -25,7 +29,8 @@ export default {
     return {
       message: "Welcome to Vue.js!",
       people: [],
-      newPerson: { name: "darlene", bio: "my name is darlene", bioVisible: true }
+      newPerson: { name: "", bio: "", bioVisible: true },
+      errors: []
     };
   },
   created: function() {
@@ -43,6 +48,13 @@ export default {
       axios.post('http://localhost:3000/api/people', params).then(function(response) {
         console.log(response.data);
         this.people.push(response.data);
+        this.errors = [];
+      }.bind(this)).catch(function(errors) {
+        console.log('in the .catch function');
+        console.log(errors.response);
+        // what should i do in the .catch?
+        // tell the user they did something wrong
+        this.errors = errors.response.data.errors;
       }.bind(this))
       console.log('add the person');
     },
