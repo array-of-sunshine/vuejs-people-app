@@ -1,13 +1,16 @@
 <template>
   <div class="home">
     <h1>{{ people.length }} people</h1>
-    <div v-for="person in people">
+    Search by name: <input v-model="nameFilter">
+
+    <div v-for="person in filterBy(people, nameFilter, 'name')">
       <h4 v-on:click="toggleBioVisible(person)">{{ person.name }}</h4>
       <h3 v-bind:class="{red: person.bioVisible, blue: !person.bioVisible}">{{ person.bio }}</h3>
 
       <button v-on:click="removePerson(person)">Remove this person</button>
       <hr>
     </div>
+    
     <p class="red" v-for="error in errors">{{error}}</p>
     <p>name:<input type="text" v-model="newPerson.name"></p>
     <p>bio:<input type="text" v-model="newPerson.bio"></p>
@@ -27,13 +30,16 @@
 <script>
 var axios = require('axios');
 // import axios from 'axios'
+import Vue2Filters from 'vue2-filters'
 export default {
+  mixins: [Vue2Filters.mixin], 
   data: function() {
     return {
       message: "Welcome to Vue.js!",
       people: [],
       newPerson: { name: "", bio: "", bioVisible: true },
-      errors: []
+      errors: [],
+      nameFilter: ''
     };
   },
   created: function() {
