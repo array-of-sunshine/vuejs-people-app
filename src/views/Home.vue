@@ -14,7 +14,7 @@
     </div>
 
     <!-- <div v-for="person in filterBy(people, nameFilter)"> -->
-    <transition-group name="purple-hippo">
+    <transition-group name="fade">
       <div v-for="person in orderBy(people, sortAttribute, sortAscending)" :key="person.id">
       <!-- <div v-for="person in orderBy(filterBy(people, nameFilter, 'name', 'bio'), sortAttribute)"> -->
         <h4 v-on:click="toggleBioVisible(person)">{{ person.name }}</h4>
@@ -33,7 +33,7 @@
 </template>
 
 <style>
-.purple-hippo-red {
+.red {
   color: red;
 }
 .blue {
@@ -41,10 +41,10 @@
 }
 
 /* Vue.js fade */
-.fade-enter-active, .fade-leave-active, .purple-hippo-enter-active, .purple-hippo-leave-active {
+.fade-enter-active, .fade-leave-active {
   transition: opacity .5s
 }
-.fade-enter, .fade-leave-to, .purple-hippo-enter, .purple-hippo-leave-to {
+.fade-enter, .fade-leave-to {
   opacity: 0
 }
 
