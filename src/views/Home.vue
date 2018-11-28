@@ -1,16 +1,22 @@
 <template>
   <div class="home">
     <h1>{{ people.length }} people</h1>
-    Search by name: <input v-model="nameFilter">
+    Search by name: <input v-model="nameFilter" list="names">
+    <datalist id="names">
+      <span v-for="person in people">
+        <option>{{ person.name }}</option>
+        <option>{{ person.bio }}</option>
+      </span>
+    </datalist>
 
-    <div v-for="person in filterBy(people, nameFilter, 'name')">
+    <div v-for="person in filterBy(people, nameFilter)">
       <h4 v-on:click="toggleBioVisible(person)">{{ person.name }}</h4>
       <h3 v-bind:class="{red: person.bioVisible, blue: !person.bioVisible}">{{ person.bio }}</h3>
 
       <button v-on:click="removePerson(person)">Remove this person</button>
       <hr>
     </div>
-    
+
     <p class="red" v-for="error in errors">{{error}}</p>
     <p>name:<input type="text" v-model="newPerson.name"></p>
     <p>bio:<input type="text" v-model="newPerson.bio"></p>
