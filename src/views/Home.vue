@@ -1,15 +1,20 @@
 <template>
   <div class="home">
     <h1>{{ people.length }} people</h1>
-    Search by name: <input v-model="nameFilter" list="names">
+    Search by name or bio: <input v-model="nameFilter" list="names">
     <datalist id="names">
       <span v-for="person in people">
         <option>{{ person.name }}</option>
         <option>{{ person.bio }}</option>
       </span>
     </datalist>
+    <div>
+      <button @click="setSortAttribute('name')">Sort by name</button>
+      <button @click="setSortAttribute('bio')">Sort by bio</button>
+    </div>
 
-    <div v-for="person in filterBy(people, nameFilter)">
+    <!-- <div v-for="person in filterBy(people, nameFilter)"> -->
+    <div v-for="person in orderBy(filterBy(people, nameFilter, 'name', 'bio'), sortAttribute)">
       <h4 v-on:click="toggleBioVisible(person)">{{ person.name }}</h4>
       <h3 v-bind:class="{red: person.bioVisible, blue: !person.bioVisible}">{{ person.bio }}</h3>
 
@@ -45,7 +50,8 @@ export default {
       people: [],
       newPerson: { name: "", bio: "", bioVisible: true },
       errors: [],
-      nameFilter: ''
+      nameFilter: '',
+      sortAttribute: 'name'
     };
   },
   created: function() {
@@ -90,6 +96,9 @@ export default {
       // } else {
       //   inputPerson.bioVisible = true;
       // }
+    },
+    setSortAttribute: function(inputAttribute) {
+      this.sortAttribute = inputAttribute;
     }
   },
   computed: {}
