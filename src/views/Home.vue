@@ -14,6 +14,7 @@
     </div>
 
     <!-- <div v-for="person in filterBy(people, nameFilter)"> -->
+    <!-- <div v-for="person in orderBy(people, sortAttribute)"> -->
     <div v-for="person in orderBy(filterBy(people, nameFilter, 'name', 'bio'), sortAttribute)">
       <h4 v-on:click="toggleBioVisible(person)">{{ person.name }}</h4>
       <h3 v-bind:class="{red: person.bioVisible, blue: !person.bioVisible}">{{ person.bio }}</h3>
