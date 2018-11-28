@@ -14,14 +14,16 @@
     </div>
 
     <!-- <div v-for="person in filterBy(people, nameFilter)"> -->
-    <div v-for="person in orderBy(people, sortAttribute, sortAscending)">
-    <!-- <div v-for="person in orderBy(filterBy(people, nameFilter, 'name', 'bio'), sortAttribute)"> -->
-      <h4 v-on:click="toggleBioVisible(person)">{{ person.name }}</h4>
-      <h3 v-bind:class="{red: person.bioVisible, blue: !person.bioVisible}">{{ person.bio }}</h3>
+    <transition-group name="purple-hippo">
+      <div v-for="person in orderBy(people, sortAttribute, sortAscending)" :key="person.id">
+      <!-- <div v-for="person in orderBy(filterBy(people, nameFilter, 'name', 'bio'), sortAttribute)"> -->
+        <h4 v-on:click="toggleBioVisible(person)">{{ person.name }}</h4>
+        <h3 v-bind:class="{red: person.bioVisible, blue: !person.bioVisible}">{{ person.bio }}</h3>
 
-      <button v-on:click="removePerson(person)">Remove this person</button>
-      <hr>
-    </div>
+        <button v-on:click="removePerson(person)">Remove this person</button>
+        <hr>
+      </div>
+    </transition-group>
 
     <p class="red" v-for="error in errors">{{error}}</p>
     <p>name:<input type="text" v-model="newPerson.name"></p>
@@ -31,12 +33,45 @@
 </template>
 
 <style>
-.red {
+.purple-hippo-red {
   color: red;
 }
 .blue {
   color: blue;
 }
+
+/* Vue.js fade */
+.fade-enter-active, .fade-leave-active, .purple-hippo-enter-active, .purple-hippo-leave-active {
+  transition: opacity .5s
+}
+.fade-enter, .fade-leave-to, .purple-hippo-enter, .purple-hippo-leave-to {
+  opacity: 0
+}
+
+/* Vue.js slide-right */
+.slide-right-enter-active {
+  transition: all .3s ease;
+}
+.slide-right-leave-active {
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-right-enter, .slide-right-leave-to {
+  transform: translateX(10px);
+  opacity: 0;
+}
+
+/* Vue.js slide-left */
+.slide-left-enter-active {
+  transition: all .3s ease;
+}
+.slide-left-leave-active {
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-left-enter, .slide-left-leave-to {
+  transform: translateX(-10px);
+  opacity: 0;
+}
+
 </style>
 
 <script>
