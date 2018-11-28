@@ -14,8 +14,8 @@
     </div>
 
     <!-- <div v-for="person in filterBy(people, nameFilter)"> -->
-    <!-- <div v-for="person in orderBy(people, sortAttribute)"> -->
-    <div v-for="person in orderBy(filterBy(people, nameFilter, 'name', 'bio'), sortAttribute)">
+    <div v-for="person in orderBy(people, sortAttribute, sortAscending)">
+    <!-- <div v-for="person in orderBy(filterBy(people, nameFilter, 'name', 'bio'), sortAttribute)"> -->
       <h4 v-on:click="toggleBioVisible(person)">{{ person.name }}</h4>
       <h3 v-bind:class="{red: person.bioVisible, blue: !person.bioVisible}">{{ person.bio }}</h3>
 
@@ -52,7 +52,8 @@ export default {
       newPerson: { name: "", bio: "", bioVisible: true },
       errors: [],
       nameFilter: '',
-      sortAttribute: 'name'
+      sortAttribute: 'name',
+      sortAscending: 1
     };
   },
   created: function() {
@@ -99,7 +100,16 @@ export default {
       // }
     },
     setSortAttribute: function(inputAttribute) {
-      this.sortAttribute = inputAttribute;
+      // if (this.sortAscending === 1) {
+      //   this.sortAscending = -1;
+      // } else { // if this.sortAscending === -1
+      //   this.sortAscending = 1;
+      // }
+      if (this.sortAttribute === inputAttribute) {
+        this.sortAscending *= -1;
+      } else {
+        this.sortAttribute = inputAttribute;
+      }
     }
   },
   computed: {}
